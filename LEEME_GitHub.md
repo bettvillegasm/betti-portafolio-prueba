@@ -21,3 +21,7 @@ Se incorporó el enlace directo facebook.com/reel/1561457488594558. La inserció
 En vista previa local aparece una tarjeta con acceso al Reel. Si el reproductor falla
 en el sitio publicado, usa “Mostrar enlace alternativo”. No se garantiza autoplay.
 Se utiliza la URL directa del Reel. No se garantiza autoplay en todos los navegadores o en celulares.
+
+
+## Grupo Techo - video externo
+Facebook muestra el error «Este video no se puede insertar» para algunos videos. La galeria de Grupo Techo ahora presenta una ficha visual con enlaces a los seis videos originales en Facebook, sin iframes que fallen. Para reproducirlos directamente en el portfolio, subir videos MP4 originales o alojarlos en un proveedor que autorice insercion.
