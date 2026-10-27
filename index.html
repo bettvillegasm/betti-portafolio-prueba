@@ -423,9 +423,45 @@ body{overflow-x:clip}
 .icatec-gallery .media-embed{width:100%;min-width:0;aspect-ratio:16/9;min-height:0;max-height:none;grid-template-columns:minmax(0,1fr);position:relative;border-radius:19px;overflow:hidden;background:#ECF1FF;border:1px solid #CDD7F5;display:grid;place-items:center}
 .icatec-gallery .media-embed.is-youtube{aspect-ratio:16/9}
 .icatec-gallery .media-embed.is-facebook-reel{width:100%;max-width:none;min-height:0;aspect-ratio:16/9;margin:0}
-.icatec-gallery .media-embed.is-facebook-post{min-height:0;max-height:none;aspect-ratio:16/9;overflow:hidden;align-items:stretch}
+/* Las publicaciones gráficas necesitan mostrar primero el copy y DESPUÉS las imágenes;
+   su altura nunca debe heredar el 16:9 reservado a los reproductores de video. */
+.case.is-facebook-post-featured{
+  grid-template-columns:minmax(0,1fr);
+  gap:22px;
+}
+.case.is-facebook-post-featured .case-media{
+  width:100%; min-width:0;
+}
+.case.is-facebook-post-featured > div:first-child {max-width:100%}
+.icatec-gallery .media-embed.is-facebook-post{
+  width:100%;
+  aspect-ratio:auto;
+  height:clamp(690px,86dvh,1000px);
+  min-height:690px;
+  max-height:none;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:stretch;
+  background:#fff;
+}
+.icatec-gallery .media-embed.is-facebook-post iframe{
+  width:min(100%,750px);
+  max-width:100%;
+  height:100%;
+  min-height:100%;
+  background:#fff;
+}
+@media(max-width:760px){
+  .case.is-facebook-post-featured{gap:17px}
+  .icatec-gallery .media-embed.is-facebook-post{height:clamp(610px,83dvh,900px);min-height:610px}
+}
+@media(max-width:390px){
+  .icatec-gallery .media-embed.is-facebook-post{height:clamp(580px,83dvh,790px);min-height:580px}
+}
+
 .icatec-gallery .media-embed iframe{display:block;width:100%;height:100%;border:0;background:#fff}
-.icatec-gallery .media-embed.is-facebook-post iframe{height:100%;min-height:0}
+
 .icatec-gallery .media-embed.is-facebook-reel iframe{height:100%;min-height:0}
 .icatec-gallery .media-meta{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:#253A82}
 .icatec-gallery .media-current-title{font-weight:600}
@@ -747,7 +783,16 @@ function drawIcatecThumbs(){
    const label=document.createElement('span');label.className='media-thumb-label';label.textContent=media.title;
    const origin=document.createElement('span');origin.className='media-thumb-source';origin.textContent=media.source;
    btn.append(art,label,origin);
-   btn.addEventListener('click',()=>selectIcatecMedia(index));
+   btn.addEventListener('click',()=>{
+     selectIcatecMedia(index);
+     // Mostrar el inicio de la nueva ficha (sin mover el scroll de la página detrás del dialog).
+     requestAnimationFrame(()=>{
+       if(!sceneDialog.open)return;
+       const dialogTop=sceneDialog.getBoundingClientRect().top;
+       const galleryTop=mediaEmbed.getBoundingClientRect().top;
+       sceneDialog.scrollTo({top:Math.max(0,sceneDialog.scrollTop+galleryTop-dialogTop-22),behavior:reduced.matches?'instant':'smooth'});
+     });
+   });
    mediaThumbs.append(btn);
  });
 }
@@ -760,6 +805,7 @@ function selectIcatecMedia(index){
  mediaCount.textContent=String(index+1).padStart(2,'0')+' / '+String(icatecMedia.length).padStart(2,'0');
  [...mediaThumbs.children].forEach((button,i)=>button.setAttribute('aria-pressed',String(index===i)));
  stopMediaPlayback();
+ document.getElementById('case').classList.toggle('is-facebook-post-featured',media.kind==='facebook-post');
  mediaEmbed.className='media-embed is-'+media.kind;
  if(!sceneDialog.open || currentProject!=='icatec')return;
  const iframe=document.createElement('iframe');
@@ -767,6 +813,7 @@ function selectIcatecMedia(index){
  iframe.allow='autoplay; encrypted-media; picture-in-picture; fullscreen; web-share';
  iframe.allowFullscreen=true;iframe.loading='eager';
  iframe.referrerPolicy='strict-origin-when-cross-origin';
+ if(media.kind==='facebook-post'){iframe.scrolling='yes';}
  if(media.kind==='youtube'){
    iframe.src='https://www.youtube.com/embed/'+encodeURIComponent(media.videoId)+'?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
  } else if(media.kind==='facebook-reel'){
@@ -774,7 +821,8 @@ function selectIcatecMedia(index){
  } else {
    // Estas URL de Facebook son publicaciones, no enlaces directos al archivo de video.
    // Embedded Posts funciona con publicaciones públicas pero no garantiza autoplay.
-   iframe.src='https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(media.url)+'&show_text=false&width=500';
+   const frameWidth=Math.max(350,Math.min(750,Math.floor(mediaEmbed.getBoundingClientRect().width||500)));
+   iframe.src='https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(media.url)+'&show_text=false&width='+frameWidth;
  }
  mediaEmbed.append(iframe);
 }
