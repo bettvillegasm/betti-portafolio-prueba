@@ -420,13 +420,13 @@ body{overflow-x:clip}
 /* Galería multimedia de ICATEC. Un reproductor activo, proporciones por origen. */
 .icatec-gallery[hidden]{display:none!important}
 .icatec-gallery{display:grid;gap:13px;min-width:0}
-.icatec-gallery .media-embed{width:100%;min-width:0;grid-template-columns:minmax(0,1fr);position:relative;border-radius:19px;overflow:hidden;background:#ECF1FF;border:1px solid #CDD7F5;display:grid;place-items:center}
+.icatec-gallery .media-embed{width:100%;min-width:0;aspect-ratio:16/9;min-height:0;max-height:none;grid-template-columns:minmax(0,1fr);position:relative;border-radius:19px;overflow:hidden;background:#ECF1FF;border:1px solid #CDD7F5;display:grid;place-items:center}
 .icatec-gallery .media-embed.is-youtube{aspect-ratio:16/9}
-.icatec-gallery .media-embed.is-facebook-reel{max-width:380px;min-height:420px;aspect-ratio:9/13;margin-inline:auto}
-.icatec-gallery .media-embed.is-facebook-post{min-height:470px;max-height:540px;overflow:auto;align-items:start}
+.icatec-gallery .media-embed.is-facebook-reel{width:100%;max-width:none;min-height:0;aspect-ratio:16/9;margin:0}
+.icatec-gallery .media-embed.is-facebook-post{min-height:0;max-height:none;aspect-ratio:16/9;overflow:hidden;align-items:stretch}
 .icatec-gallery .media-embed iframe{display:block;width:100%;height:100%;border:0;background:#fff}
-.icatec-gallery .media-embed.is-facebook-post iframe{height:520px;min-height:520px}
-.icatec-gallery .media-embed.is-facebook-reel iframe{min-height:500px}
+.icatec-gallery .media-embed.is-facebook-post iframe{height:100%;min-height:0}
+.icatec-gallery .media-embed.is-facebook-reel iframe{height:100%;min-height:0}
 .icatec-gallery .media-meta{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:#253A82}
 .icatec-gallery .media-current-title{font-weight:600}
 .icatec-gallery .media-meta a{color:#475A91;text-decoration:underline;text-underline-offset:4px;font-size:11px}
@@ -440,11 +440,34 @@ body{overflow-x:clip}
 .icatec-gallery .media-thumb-art{width:100%;aspect-ratio:16/9;border-radius:9px;background:linear-gradient(140deg,#88A2FF,#AB9DFF);position:relative;display:grid;place-items:center;overflow:hidden}
 .icatec-gallery .media-thumb-art[data-origin="facebook"]{background:linear-gradient(130deg,#C0E0FF,#AB9DFF)}
 .icatec-gallery .media-thumb-art img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}
+
+/* Miniaturas auténticas de Facebook. El plugin se escala dentro de la tarjeta.
+   Se conserva el color de respaldo cuando Facebook no envía una vista previa. */
+.icatec-gallery .media-thumb-art .media-thumb-facebook-preview{
+  display:block;
+  position:absolute;
+  left:0;top:0;
+  width:500px;height:640px;
+  max-width:none;
+  border:0;
+  background:transparent;
+  pointer-events:none;
+  transform-origin:top left;
+  transform:scale(var(--facebook-thumb-scale,.28));
+  z-index:1;
+}
+.icatec-gallery .media-thumb-art .media-thumb-play{z-index:2}
+.icatec-gallery .media-thumb-art:has(.media-thumb-facebook-preview) .media-thumb-play{
+  width:25px;height:25px;font-size:10px;
+  background:rgba(255,255,255,.91);
+  box-shadow:0 2px 8px rgba(37,58,130,.12);
+}
+
 .icatec-gallery .media-thumb-art .media-thumb-play{position:relative;display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#fff;color:#253A82;font-size:12px;box-shadow:0 2px 8px #253A8236}
 .icatec-gallery .media-thumb-source{font-size:10px;color:#536498;display:block;white-space:nowrap}
 .icatec-gallery .media-thumb-label{font-size:12px;display:block;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-@media(max-width:760px){.icatec-gallery .media-thumbs{gap:8px}.icatec-gallery .media-thumb{flex-basis:136px}.icatec-gallery .media-embed.is-facebook-post{max-height:490px;min-height:440px}.icatec-gallery .media-embed.is-facebook-reel{min-height:390px}}
-@media(max-width:390px){.icatec-gallery .media-thumb{flex-basis:121px}.icatec-gallery .media-embed{border-radius:14px}.icatec-gallery .media-embed.is-facebook-reel{max-width:100%;min-height:360px}}
+@media(max-width:760px){.icatec-gallery .media-thumbs{gap:8px}.icatec-gallery .media-thumb{flex-basis:136px}}
+@media(max-width:390px){.icatec-gallery .media-thumb{flex-basis:121px}.icatec-gallery .media-embed{border-radius:14px}}
 @media(prefers-reduced-motion:reduce){.icatec-gallery .media-thumb{transition:none}}
 </style>
 </head>
@@ -684,6 +707,32 @@ function drawIcatecThumbs(){
      img.alt='';img.loading='lazy';
      img.addEventListener('error',()=>img.remove());
      art.append(img);
+   } else if(media.kind==='facebook-post' || media.kind==='facebook-reel'){
+     // Mostrar una versión pequeña del contenido real. No usar una imagen inventada.
+     // Facebook puede restringir la vista previa: el fondo/icono quedan de respaldo.
+     const fbPreview=document.createElement('iframe');
+     fbPreview.className='media-thumb-facebook-preview';
+     fbPreview.title='Vista previa de '+media.title+' en Facebook';
+     fbPreview.tabIndex=-1;
+     fbPreview.setAttribute('aria-hidden','true');
+     fbPreview.setAttribute('scrolling','no');
+     fbPreview.loading='lazy';
+     fbPreview.referrerPolicy='strict-origin-when-cross-origin';
+     const plugin=media.kind==='facebook-post'?'post.php':'video.php';
+     fbPreview.src='https://www.facebook.com/plugins/'+plugin+'?href='+encodeURIComponent(media.url)+
+        '&show_text=false&width=500'+(media.kind==='facebook-reel'?'&autoplay=false&mute=true':'');
+     art.append(fbPreview);
+     // Ajustar la previsualización en el carrusel responsive.
+     const resizeFacebookThumb=()=>{
+       if(art.clientWidth>0)art.style.setProperty('--facebook-thumb-scale',String(art.clientWidth/500));
+     };
+     if(typeof ResizeObserver==='function'){
+       const previewObserver=new ResizeObserver(resizeFacebookThumb);
+       previewObserver.observe(art);
+     } else {
+       requestAnimationFrame(resizeFacebookThumb);
+       window.addEventListener('resize',resizeFacebookThumb,{passive:true});
+     }
    }
    const indicator=document.createElement('span');
    indicator.className='media-thumb-play';
