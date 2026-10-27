@@ -25,3 +25,10 @@ Se utiliza la URL directa del Reel. No se garantiza autoplay en todos los navega
 
 ## Grupo Techo - video externo
 Facebook muestra el error «Este video no se puede insertar» para algunos videos. La galeria de Grupo Techo ahora presenta una ficha visual con enlaces a los seis videos originales en Facebook, sin iframes que fallen. Para reproducirlos directamente en el portfolio, subir videos MP4 originales o alojarlos en un proveedor que autorice insercion.
+
+
+ACTUALIZACIÓN GRUPO TECHO · YouTube
+- Cuatro videos no listados de YouTube integrados en el carrusel de Grupo Techo, con miniaturas generadas por YouTube.
+- El visitante puede reproducirlos dentro del portafolio.
+- Se conservan seis enlaces anteriores a Facebook dentro de un apartado desplegable secundario.
+- El contenido de los cuatro videos y su correspondencia con los enlaces previos no se ha verificado desde el entorno de trabajo.
