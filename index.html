@@ -760,6 +760,14 @@ body{overflow-x:clip}
  .gt-video-kicker{font-size:9px}
 }
 
+
+/* Portadas originales, cuando Facebook permita consultarlas. */
+.gt-video-cover{isolation:isolate}
+.gt-feature-still{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-1;opacity:.38}
+.gt-video-cover:has(.gt-feature-still)::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(237,242,255,.98) 0%,rgba(237,242,255,.88) 56%,rgba(237,242,255,.16) 100%);z-index:-1}
+.icatec-gallery .gt-thumb-art:has(.media-thumb-facebook-preview) .gt-thumb-number,
+.icatec-gallery .gt-thumb-art:has(.media-thumb-facebook-preview) .gt-thumb-kicker{z-index:0}
+.icatec-gallery .gt-thumb-art img{z-index:1}
 </style>
 </head>
 <body>
@@ -1136,8 +1144,9 @@ function drawIcatecThumbs(){
    const art=document.createElement('span');art.className='media-thumb-art';
    art.dataset.origin=media.kind.startsWith('facebook')?'facebook':'youtube';
    if(currentProject==='simbila'){
-     // Facebook impide insertar algunos vídeos aunque su enlace original funcione.
-     // Portadas editoriales estables, sin iframes negros ni miniaturas ficticias.
+     // Utilizar la misma vista previa oficial que en el reel de ICATEC.
+     // Los demás videos prueban primero la miniatura pública disponible;
+     // si Facebook no la ofrece, se mantiene la tarjeta de respaldo.
      art.classList.add('gt-thumb-art');
      const number=document.createElement('span');
      number.className='gt-thumb-number';
@@ -1146,6 +1155,33 @@ function drawIcatecThumbs(){
      kicker.className='gt-thumb-kicker';
      kicker.textContent=media.kind==='facebook-reel'?'REEL':'VIDEO';
      art.append(number,kicker);
+     if(media.kind==='facebook-reel'){
+       // La misma integración que en las miniaturas del reel de ICATEC.
+       const fbPreview=document.createElement('iframe');
+       fbPreview.className='media-thumb-facebook-preview';
+       fbPreview.title='Previsualización de '+media.title+' de Grupo Techo';
+       fbPreview.tabIndex=-1;
+       fbPreview.setAttribute('aria-hidden','true');
+       fbPreview.setAttribute('scrolling','no');
+       fbPreview.loading='lazy';
+       fbPreview.referrerPolicy='strict-origin-when-cross-origin';
+       fbPreview.src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(media.url)+'&show_text=false&width=500&autoplay=false&mute=true';
+       art.append(fbPreview);
+       const resize=()=>{
+         if(art.clientWidth>0)art.style.setProperty('--facebook-thumb-scale',String(art.clientWidth/500));
+       };
+       if(typeof ResizeObserver==='function')new ResizeObserver(resize).observe(art);
+       else requestAnimationFrame(resize);
+     } else {
+       const id=(media.url.match(/\/videos\/(\d+)/)||[])[1];
+       if(id){
+         const img=document.createElement('img');
+         img.alt='';img.loading='lazy';
+         img.src='https://graph.facebook.com/'+encodeURIComponent(id)+'/picture?type=large';
+         img.addEventListener('error',()=>img.remove());
+         art.append(img);
+       }
+     }
    } else if(media.kind==='youtube'){
      const img=document.createElement('img');
      img.src='https://i.ytimg.com/vi/'+encodeURIComponent(media.videoId)+'/hqdefault.jpg';
@@ -1246,6 +1282,17 @@ function selectIcatecMedia(index){
    arrow.className='gt-video-open';
    arrow.textContent='↗';
    arrow.setAttribute('aria-hidden','true');
+   // Cuando la portada pública esté disponible, usarla también en la pieza destacada.
+   const videoId=(media.url.match(/\/(?:reel|videos)\/(\d+)/)||[])[1];
+   if(videoId){
+     const still=document.createElement('img');
+     still.className='gt-feature-still';
+     still.alt='';
+     still.loading='lazy';
+     still.src='https://graph.facebook.com/'+encodeURIComponent(videoId)+'/picture?type=large';
+     still.addEventListener('error',()=>still.remove());
+     cover.append(still);
+   }
    cover.append(information,arrow);
    mediaEmbed.append(cover);
    return;
