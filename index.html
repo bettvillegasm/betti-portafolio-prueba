@@ -505,12 +505,146 @@ body{overflow-x:clip}
 @media(max-width:760px){.icatec-gallery .media-thumbs{gap:8px}.icatec-gallery .media-thumb{flex-basis:136px}}
 @media(max-width:390px){.icatec-gallery .media-thumb{flex-basis:121px}.icatec-gallery .media-embed{border-radius:14px}}
 @media(prefers-reduced-motion:reduce){.icatec-gallery .media-thumb{transition:none}}
+
+/* Prueba ICATEC: vista compacta de publicaciones + ampliación independiente.
+   Solo afecta los dos Facebook Posts; YouTube y Reel conservan 16:9. */
+.case.is-facebook-post-featured{grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:38px}
+.case.is-facebook-post-featured .case-media{min-width:0}
+.case.is-facebook-post-featured > div:first-child{max-width:none}
+.icatec-gallery .media-embed.is-facebook-post{
+  height:clamp(305px,44dvh,395px);
+  min-height:0;max-height:395px;aspect-ratio:auto;
+  width:100%;position:relative;overflow:hidden;
+  border-radius:19px;background:white;
+  display:block;
+}
+.icatec-gallery .media-embed.is-facebook-post iframe{
+  display:block;width:100%;height:100%;min-height:0;max-width:none;
+  border:0;background:white;
+}
+.icatec-gallery .media-embed.is-facebook-post::after{
+  content:'';position:absolute;left:0;right:0;bottom:0;height:28px;
+  background:linear-gradient(transparent,rgba(255,255,255,.96));
+  pointer-events:none;
+}
+.icatec-gallery .expand-facebook-post{
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  width:100%;min-height:42px;margin-top:-3px;
+  background:#EDF1FF;border:1px solid #CAD5F3;border-radius:13px;
+  color:#253A82;font:inherit;font-size:12px;font-weight:600;cursor:pointer;
+  transition:background .2s,transform .2s;
+}
+.icatec-gallery .expand-facebook-post[hidden]{display:none!important}
+.icatec-gallery .expand-facebook-post:hover{background:#E2E9FF;transform:translateY(-1px)}
+.icatec-gallery .expand-facebook-post:focus-visible{outline:3px solid #88A2FF;outline-offset:3px}
+.fb-expanded-dialog{
+  width:min(710px,calc(100% - 24px));max-height:94dvh;
+  height:min(870px,94dvh);margin:auto;
+  border:1px solid #C4CFF2;border-radius:24px;
+  padding:20px;background:#FFF;box-shadow:0 24px 80px rgba(37,58,130,.22);
+  color:#253A82;overflow:hidden;
+}
+.fb-expanded-dialog::backdrop{background:rgba(25,37,84,.65);backdrop-filter:blur(4px)}
+.fb-expanded-inner{height:100%;display:flex;flex-direction:column;min-height:0;gap:12px}
+.fb-expanded-top{display:flex;gap:16px;align-items:center;justify-content:space-between}
+.fb-expanded-top h3{font-size:clamp(18px,3.3vw,24px);font-weight:500;margin:0;letter-spacing:-.025em}
+.fb-expanded-close{font:inherit;font-size:12px;border:1px solid #CBD6F3;background:#F7F9FF;border-radius:999px;padding:10px 16px;color:#253A82;cursor:pointer;min-height:42px}
+.fb-expanded-close:hover{background:#E9EEFF}
+.fb-expanded-frame-shell{flex:1;min-height:0;overflow:hidden;border:1px solid #D4DDF3;border-radius:16px;background:white;display:flex;justify-content:center}
+.fb-expanded-frame-shell iframe{width:100%;height:100%;border:0;background:#fff}
+.fb-expanded-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;color:#596B96}
+.fb-expanded-bottom a{color:#253A82;text-decoration:underline;text-underline-offset:4px}
+@media(max-width:760px){
+  .case.is-facebook-post-featured{grid-template-columns:minmax(0,1fr);gap:17px}
+  .icatec-gallery .media-embed.is-facebook-post{height:clamp(315px,47dvh,410px);max-height:410px}
+  .fb-expanded-dialog{height:min(900px,96dvh);width:calc(100% - 12px);padding:12px;border-radius:17px}
+}
+
+/* Ajuste puntual de portada: el título aparece más arriba durante el zoom. */
+.world-announce{bottom:34%}
+@media(max-width:760px) and (orientation:portrait){.world-announce{bottom:43%}}
+@media (orientation:landscape) and (max-height:590px){.world-announce{bottom:16%}}
+
+/* Grupo Techo comparte el visor compacto de videos. Ningún Reel impone altura vertical. */
+.case .media-embed.is-facebook-video {width:100%;aspect-ratio:16/9;min-height:0;max-height:none;overflow:hidden;}
+.case .media-embed.is-facebook-video iframe {display:block;width:100%;height:100%;border:0;}
+
+/* Vista previa - Página de licencia ICATEC, sin modificar estilos aprobados */
+.case-web-link{display:flex;gap:13px;align-items:center;width:100%;padding:16px 17px;margin:22px 0 18px;text-align:left;font:inherit;color:#253A82;border:1px solid #BBCBFF;border-radius:20px;background:linear-gradient(112deg,#E9EFFF,#F1EEFF);cursor:pointer;transition:transform .2s ease,border-color .2s ease,background .2s ease}
+.case-web-link:not([hidden]):hover{transform:translateY(-3px);border-color:#88A2FF;background:#E4EAFE}
+.case-web-link svg{width:29px;height:29px;flex:none}
+.case-web-link small{display:block;font-size:11px;color:#52669A;margin-top:4px;line-height:1.45}
+.case-web-link .case-web-arrow{margin-left:auto;font-size:21px}
+.site-showcase{border:1px solid #C7D4F6;background:#F9FAFF;border-radius:21px;overflow:hidden;min-width:0;box-shadow:0 12px 30px rgba(37,58,130,.05)}
+.site-showcase[hidden],.case-web-link[hidden]{display:none!important}
+.site-chrome{height:37px;display:flex;align-items:center;gap:12px;padding:0 15px;background:#FFFFFF;border-bottom:1px solid #E0E6F7}
+.site-chrome-dots{display:flex;gap:5px}
+.site-chrome-dots span{height:7px;width:7px;border-radius:50%;background:#C9D4F2}
+.site-chrome-dots span:nth-child(2){background:#E8CCEE}
+.site-chrome-dots span:nth-child(3){background:#B9DCC7}
+.site-chrome-label{overflow:hidden;white-space:nowrap;text-overflow:ellipsis;color:#7484B0;font:400 11px/1.2 Helvetica,Arial,sans-serif}
+.site-content{padding:18px;background:#FFFFFF}
+.site-hero{background:#E7EEFF;border-radius:13px;padding:20px 18px 16px;color:#253A82}
+.site-eyebrow{display:block;color:#52669A;font-size:10px;margin-bottom:7px}
+.site-hero strong{display:block;font-size:clamp(20px,2.5vw,27px);font-weight:500;line-height:1.16;letter-spacing:-.035em}
+.site-hero p{font-size:12px;line-height:1.6;margin:8px 0 0;color:#475A91}
+.site-page-preview{border-radius:11px;overflow:hidden;border:1px solid #DEE5F7;margin-top:12px;position:relative;min-height:180px;background:linear-gradient(180deg,#101D41 0 28%,#EFF2FA 28% 100%)}
+.site-page-preview img{width:100%;height:auto;display:block;position:relative;z-index:2}
+.site-page-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:28px;gap:9px;color:#253A82;z-index:1}
+.site-page-placeholder strong{font-weight:500;font-size:16px}
+.site-page-placeholder span{color:#52669A;font-size:12px;max-width:260px;line-height:1.5}
+.site-actions{padding:13px 18px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;background:#fff}
+.site-actions span{font-size:12px;color:#52669A}
+.site-actions a{font-size:12px;font-weight:500;color:#253A82;text-decoration:underline;text-underline-offset:4px;white-space:nowrap}
+@media(max-width:600px){.case-web-link{margin-top:16px;padding:13px}.site-content{padding:12px}.site-hero{padding:15px}.site-chrome{height:32px}.site-page-preview{min-height:140px}.site-actions{padding:13px;align-items:start}.site-actions a{white-space:normal;text-align:right}}
+
+
+/* ICATEC · Selección editorial: solamente se muestra dentro del proyecto. */
+.icatec-editorial{margin-top:34px;padding-top:28px;border-top:1px solid #D4DDF4;color:#253A82}
+.icatec-editorial[hidden]{display:none!important}
+.icatec-editorial-head{display:flex;align-items:end;justify-content:space-between;gap:22px;margin-bottom:20px}
+.icatec-editorial-head h4{font-size:clamp(23px,2.5vw,33px);line-height:1.15;font-weight:400;letter-spacing:-.045em;margin:5px 0 0}
+.icatec-editorial-head p{font-size:13px;line-height:1.55;color:#6474A4;margin:0;max-width:240px;text-align:right}
+.icatec-editorial-kicker{font-size:11px;color:#596EA3}
+.icatec-editorial-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.icatec-editorial-card{min-width:0;display:flex;flex-direction:column;border:1px solid #D4DDF4;border-radius:21px;background:#fff;text-decoration:none;color:#253A82;overflow:hidden;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.icatec-editorial-card:hover,.icatec-editorial-card:focus-visible{transform:translateY(-4px);border-color:#8FA5FF;box-shadow:0 16px 36px rgba(37,58,130,.10)}
+.icatec-editorial-cover{height:160px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.icatec-editorial-cover img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;position:absolute;inset:0;z-index:2}
+.icatec-editorial-cover img[hidden]{display:none!important}
+.icatec-editorial-cover.is-health-article{background:linear-gradient(125deg,#D6E5FF,#C8DDFF)}
+.icatec-editorial-cover .editorial-cover-fallback{display:flex;align-items:center;justify-content:center;position:absolute;inset:0}
+.icatec-editorial-cover .editorial-cover-fallback svg{height:120px;width:min(75%,210px)}
+.icatec-editorial-cover.is-farm{background:linear-gradient(135deg,#D9E8FF 0%,#AFBCFF 54%,#E3FC87 140%)}
+.icatec-editorial-cover.is-health{background:linear-gradient(140deg,#EAF0FF 0%,#DAF2F2 100%)}
+.icatec-editorial-cover svg{display:block;width:min(72%,230px);height:122px;opacity:.92}
+.icatec-editorial-content{display:flex;flex:1;flex-direction:column;gap:9px;padding:19px 19px 18px}
+.icatec-editorial-type{font-size:10px;letter-spacing:.015em;color:#6475A6}
+.icatec-editorial-title{font-weight:400;font-size:clamp(17px,1.8vw,21px);line-height:1.22;letter-spacing:-.035em}
+.icatec-editorial-desc{font-size:12px;line-height:1.65;color:#586A9D}
+.icatec-editorial-cta{font-size:12px;display:flex;justify-content:space-between;gap:8px;align-items:center;margin-top:auto;padding-top:11px;border-top:1px solid #E7EAF6}
+@media(max-width:960px){.icatec-editorial-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.icatec-editorial-head h4{font-size:28px}}
+@media(max-width:570px){.icatec-editorial{margin-top:25px;padding-top:23px}.icatec-editorial-grid{grid-template-columns:1fr;gap:12px}.icatec-editorial-head{align-items:start;flex-direction:column;gap:7px}.icatec-editorial-head p{text-align:left;max-width:none}.icatec-editorial-card{display:grid;grid-template-columns:minmax(0,41%) minmax(0,59%);min-height:176px;border-radius:17px}.icatec-editorial-cover{height:100%;min-height:176px}.icatec-editorial-cover svg{width:90%;height:110px}.icatec-editorial-content{padding:13px;gap:7px}.icatec-editorial-title{font-size:17px}.icatec-editorial-desc{font-size:11px;line-height:1.45}.icatec-editorial-cta{padding-top:7px;font-size:11px}}
+@media(max-width:360px){.icatec-editorial-card{grid-template-columns:38% 62%}.icatec-editorial-title{font-size:15px}}
+
+
+/* Experiencias digitales: demostración del CRM sin contenido de la publicación LinkedIn */
+.crm-video-showcase{width:100%;min-width:0;max-width:640px;margin-inline:auto;border:1px solid #CBD4F3;background:#F7F8FF;border-radius:20px;overflow:hidden;box-shadow:0 10px 26px rgba(37,58,130,.07)}
+.crm-video-showcase[hidden]{display:none!important}
+.crm-video-inner{width:100%;aspect-ratio:504 / 399;min-width:0;background:#E9EDFF}
+.crm-video-inner iframe{display:block;width:100%;height:100%;border:0;background:#E9EDFF}
+@media(max-width:600px){.crm-video-showcase{border-radius:15px}}
+
+/* Tres experiencias digitales: una fila en escritorio, legibles en móvil. */
+@media(min-width:1000px){
+  .project-list.digital-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+}
 </style>
 </head>
 <body>
 <a class="skip-link" href="#mundo">Saltar animación y ver proyectos</a>
 <main>
-  <section id="inicio" class="story" aria-label="Bienvenida interactiva">
+  <section id="inicio" class="story" aria-label="Introducción interactiva">
     <div class="story-sticky" id="escena">
       <nav class="topbar" aria-label="Navegación principal">
         <a class="topbrand" href="#inicio" aria-label="Bettina Villegas — inicio">BV.</a>
@@ -535,7 +669,7 @@ body{overflow-x:clip}
         <span class="scroll-hint">También puedes deslizar hacia abajo ↓</span>
       </div>
       <div class="world-announce" id="world-announce" aria-hidden="true">
-        <span>Bienvenida</span>
+        
         <h2>Conoce mi trabajo.</h2>
         <p>Elige por dónde empezar.</p>
         <a href="#mundo" id="seguir">Ver mi mundo ↓</a>
@@ -552,7 +686,7 @@ body{overflow-x:clip}
         <button type="button" class="object" data-category="proyectos" aria-expanded="false" aria-haspopup="dialog" aria-controls="ventana-proyecto">
           <span class="icon-stage"><svg viewBox="0 0 160 134" role="img" aria-label="Carpeta cerrada que se abre al seleccionar"><path d="M13 47 V37 Q13 31 20 31 H65 L78 43 H137 Q146 43 146 51 V110 Q146 118 138 118 H22 Q13 118 13 109Z" fill="#88A2FF" stroke="#253A82" stroke-width="2.5" stroke-linejoin="round"/><path class="folder-flap" d="M12 65 Q12 60 18 60 H142 Q149 60 148 67 L139 117 H20Z" fill="#C0E0FF" stroke="#253A82" stroke-width="2.6" stroke-linejoin="round"/><path d="M32 83 H98" stroke="#253A82" stroke-width="1.6" stroke-linecap="round"/></svg></span>
          
-          <span class="object-title">Proyectos destacados</span><span class="object-desc">ICATEC y Simbilá Verde</span>
+          <span class="object-title">Proyectos destacados</span><span class="object-desc">ICATEC y Grupo Techo</span>
         </button>
         <button type="button" class="object" data-category="archivo" aria-expanded="false" aria-haspopup="dialog" aria-controls="ventana-proyecto">
           <span class="icon-stage"><span class="flash-layer" aria-hidden="true"></span><svg viewBox="0 0 160 134" role="img" aria-label="Cámara que dispara un pequeño flash al seleccionar"><rect x="13" y="44" width="135" height="76" rx="14" fill="#FFB2F7" stroke="#253A82" stroke-width="2.3"/><path d="M37 44 V35 Q37 29 43 29 H72 Q78 29 78 35 V44" fill="#AB9DFF" stroke="#253A82" stroke-width="2.2"/><g class="camera-lens"><circle cx="85" cy="82" r="28" fill="#FFFFFF" stroke="#253A82" stroke-width="2.5"/><circle cx="85" cy="82" r="18" fill="#88A2FF" stroke="#253A82" stroke-width="1.5"/><circle cx="85" cy="82" r="8" fill="#253A82"/></g><circle cx="130" cy="58" r="5" fill="#E3FC87"/></svg></span>
@@ -578,19 +712,71 @@ body{overflow-x:clip}
           </div>
         </div>
         <div id="project-list" class="project-list" aria-label="Trabajos de la categoría"></div>
-        <div class="case" id="case" aria-live="polite"><div><span class="kicker" id="case-label" hidden>PROYECTO</span><h4 id="case-name">ICATEC</h4><p id="case-description"></p><p id="case-additional"></p><a id="case-link" href="https://bettinavillegasportfolio.my.canva.site/bettijabolin" target="_blank" rel="noopener noreferrer" hidden>Ver experiencia original ↗</a><div id="case-socials" class="case-socials" hidden aria-label="Redes sociales del proyecto ICATEC">
+        <div class="case" id="case" aria-live="polite"><div><span class="kicker" id="case-label" hidden>PROYECTO</span><h4 id="case-name">ICATEC</h4><p id="case-description"></p><p id="case-additional"></p><a id="case-link" href="https://bettinavillegasportfolio.my.canva.site/bettijabolin" target="_blank" rel="noopener noreferrer" hidden>Ver experiencia original ↗</a><button id="case-web-link" type="button" class="case-web-link" hidden aria-label="Ver proyecto Diseño web para servicios ciudadanos en Experiencias digitales">
+<svg viewBox="0 0 32 32" fill="none" aria-hidden="true"><rect x="2.5" y="5" width="27" height="20" rx="4" stroke="currentColor" stroke-width="1.5"/><path d="M3 11h26M12 29h8M16 25v4" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="8" r=".8" fill="currentColor"/></svg>
+<span><strong>Diseño web para servicios ciudadanos</strong><small>Conoce la página que diseñé para ICATEC</small></span><span class="case-web-arrow" aria-hidden="true">↗</span>
+</button><div id="case-socials" class="case-socials" hidden aria-label="Redes sociales del proyecto ICATEC">
 <p class="social-intro">Conoce los canales del proyecto</p>
 <div class="social-links">
 <a class="social-link" href="https://www.facebook.com/icatecperu/" target="_blank" rel="noopener noreferrer" aria-label="Facebook de ICATEC Perú, abrir en otra pestaña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12A10 10 0 1 0 10.44 21.88V14.9H7.9V12h2.54V9.8c0-2.52 1.5-3.91 3.78-3.91 1.1 0 2.25.2 2.25.2v2.47H15.2c-1.25 0-1.64.77-1.64 1.56V12h2.8l-.44 2.9h-2.36v6.98A10 10 0 0 0 22 12Z"/></svg>Facebook</a>
 <a class="social-link" href="https://www.youtube.com/@icatecperu" target="_blank" rel="noopener noreferrer" aria-label="YouTube de ICATEC Perú, abrir en otra pestaña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 8.1a2.7 2.7 0 0 0-1.9-1.9C18.4 5.75 12 5.75 12 5.75s-6.4 0-8.1.45A2.7 2.7 0 0 0 2 8.1a28 28 0 0 0 0 7.8 2.7 2.7 0 0 0 1.9 1.9c1.7.45 8.1.45 8.1.45s6.4 0 8.1-.45a2.7 2.7 0 0 0 1.9-1.9 28 28 0 0 0 0-7.8ZM10 15.2V8.8l5.6 3.2L10 15.2Z"/></svg>YouTube</a>
 <a class="social-link" href="https://www.tiktok.com/@icatecperu" target="_blank" rel="noopener noreferrer" aria-label="TikTok de ICATEC Perú, abrir en otra pestaña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.9 2h-3.1v13.1a3.1 3.1 0 1 1-2.6-3.1V8.8a6.4 6.4 0 1 0 5.8 6.4V8.6a8.3 8.3 0 0 0 4.9 1.6V7.1c-2.8 0-4.9-2.2-5-5.1Z"/></svg>TikTok</a>
-</div></div></div><div class="case-media"><video id="case-video" controls playsinline preload="metadata" hidden aria-label="Video del trabajo seleccionado"></video><section id="icatec-gallery" class="icatec-gallery" hidden aria-label="Galería multimedia de ICATEC">
+</div></div></div><div class="case-media"><video id="case-video" controls playsinline preload="metadata" hidden aria-label="Video del trabajo seleccionado"></video><section id="icatec-gallery" class="icatec-gallery" hidden aria-label="Galería multimedia del proyecto">
   <div id="media-embed" class="media-embed" aria-live="off"></div>
+  <button type="button" class="expand-facebook-post" id="expand-facebook-post" hidden>⤢ Ver publicación completa</button>
   <div class="media-meta"><span id="media-current-title" class="media-current-title">Video 01 · YouTube</span><a id="media-original-link" href="https://www.youtube.com/watch?v=ydR3NMvyoHQ" target="_blank" rel="noopener noreferrer">Abrir contenido original ↗</a></div>
   <div class="media-strip-heading"><span>Selección de contenidos</span><span id="media-count" aria-live="polite">01 / 05</span></div>
-  <div id="media-thumbs" class="media-thumbs" role="group" aria-label="Elegir un contenido de ICATEC"></div>
+  <div id="media-thumbs" class="media-thumbs" role="group" aria-label="Elegir un contenido del proyecto"></div>
+</section><section id="case-crm-video" class="crm-video-showcase" hidden aria-label="Demostración del CRM de búsqueda inmobiliaria">
+ <div class="crm-video-inner" id="crm-video-inner"></div>
+</section><section id="case-site-preview" class="site-showcase" hidden aria-label="Vista previa de la página de licencia de conducir">
+<div class="site-chrome"><div class="site-chrome-dots"><span></span><span></span><span></span></div><span class="site-chrome-label">icatec.pe / trámite de licencia de conducir</span></div>
+<div class="site-content"><div class="site-hero"><span class="site-eyebrow">ICATEC · Información para la ciudadanía</span><strong>Trámite de licencia de conducir</strong><p>Consulta tu solicitud, revisa tu trámite y conoce cómo agendar tus exámenes.</p></div>
+<div class="site-page-preview"><div class="site-page-placeholder"><strong>Tu licencia de conducir, paso a paso</strong><span>Infografía original de la página de ICATEC</span></div><img src="https://www.icatec.pe/wp-content/uploads/2026/08/infografia-tramite-de-conducir.png" alt="Infografía original de ICATEC que explica cómo obtener una clave virtual, buscar una solicitud y agendar exámenes para la licencia de conducir" loading="lazy" onerror="this.style.display='none'" /></div></div>
+<div class="site-actions"><span>Diseño de página informativa</span><a href="https://www.icatec.pe/acerca-de-icatec/tramites-de-licencia-de-conducir/" target="_blank" rel="noopener noreferrer">Explorar página ↗</a></div>
 </section><div class="case-art" id="case-art" aria-label="Espacio para materiales auténticos del proyecto"><span class="art-number" id="art-number">01 / 05</span><strong class="art-word" id="art-word">ICA<br>TEC.</strong><span class="art-note">Espacio para una pieza original</span></div></div></div>
+
+<section class="icatec-editorial" id="icatec-editorial" aria-labelledby="editorial-heading" hidden>
+  <div class="icatec-editorial-head">
+    <div><span class="icatec-editorial-kicker">ICATEC · Publicaciones seleccionadas</span><h4 id="editorial-heading">Contenidos editoriales y web</h4></div>
+    <p>Artículos y páginas informativas para acercar la tecnología a las personas.</p>
+  </div>
+  <div class="icatec-editorial-grid">
+    <a class="icatec-editorial-card" href="https://www.icatec.pe/blog/salud-responde-salud-digital-que-acerca-la-atencion-a-las-familias-de-ica/" target="_blank" rel="noopener noreferrer" aria-label="Leer el artículo Salud Responde en ICATEC, abre una pestaña nueva">
+      <div class="icatec-editorial-cover is-health-article">
+        <div class="editorial-cover-fallback" aria-hidden="true"><svg viewBox="0 0 240 130" fill="none"><rect x="50" y="9" width="140" height="112" rx="18" fill="#FFFFFF" opacity=".9"/><path d="M120 29v46M97 52h46" stroke="#253A82" stroke-width="9" stroke-linecap="round"/><path d="M73 91h94M86 104h68" stroke="#A3B9EC" stroke-width="6" stroke-linecap="round"/><circle cx="185" cy="22" r="15" fill="#E3FC87"/><path d="M179 21l4 4 8-10" stroke="#253A82" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <img loading="lazy" src="https://www.icatec.pe/wp-content/uploads/2026/08/ChatGPT-Image-18-ago-2026-02_25_30-p.m.png" alt="Imagen de portada del artículo Salud Responde: personal de salud y familia" onerror="this.hidden=true" />
       </div>
+      <div class="icatec-editorial-content"><span class="icatec-editorial-type">BLOG · SALUD DIGITAL</span><strong class="icatec-editorial-title">Salud Responde: salud digital que acerca la atención a las familias de Ica</strong><span class="icatec-editorial-desc">Cómo la tecnología puede facilitar la orientación y el acceso a servicios de salud.</span><span class="icatec-editorial-cta">Leer artículo <span aria-hidden="true">↗</span></span></div>
+    </a>
+    <a class="icatec-editorial-card" href="https://www.icatec.pe/blog/transformacion-digital-en-la-agricultura-como-la-tecnologia-esta-cambiando-el-campo-en-ica/" target="_blank" rel="noopener noreferrer" aria-label="Leer el artículo Transformación digital en la agricultura en ICATEC, abre una pestaña nueva">
+      <div class="icatec-editorial-cover is-farm" aria-label="Ilustración tipográfica del tema agricultura y tecnología">
+        <svg viewBox="0 0 240 130" fill="none" aria-hidden="true"><path d="M8 100c46-27 88-25 132-6 41 18 75 16 92 2" stroke="#253A82" stroke-width="2" opacity=".5"/><path d="M8 114c46-27 88-25 132-6 41 18 75 16 92 2" stroke="#253A82" stroke-width="2" opacity=".35"/><path d="M14 128c40-29 84-30 126-10" stroke="#253A82" stroke-width="2" opacity=".3"/><path d="M120 22v45M75 45h90M75 45l-17-11M75 45l-17 11M165 45l17-11M165 45l17 11" stroke="#253A82" stroke-width="5" stroke-linecap="round"/><rect x="104" y="34" width="32" height="23" rx="8" fill="#253A82"/><circle cx="120" cy="45" r="5" fill="#E3FC87"/><circle cx="57" cy="31" r="11" stroke="#253A82" stroke-width="3"/><circle cx="183" cy="31" r="11" stroke="#253A82" stroke-width="3"/><circle cx="57" cy="60" r="11" stroke="#253A82" stroke-width="3"/><circle cx="183" cy="60" r="11" stroke="#253A82" stroke-width="3"/></svg>
+      </div>
+      <div class="icatec-editorial-content"><span class="icatec-editorial-type">BLOG · TECNOLOGÍA AGRÍCOLA</span><strong class="icatec-editorial-title">Transformación digital en la agricultura</strong><span class="icatec-editorial-desc">Drones, datos y agricultura de precisión para transformar el campo en Ica.</span><span class="icatec-editorial-cta">Leer artículo <span aria-hidden="true">↗</span></span></div>
+    </a>
+    <a class="icatec-editorial-card" href="https://www.icatec.pe/acerca-de-icatec/salud-responsable/" target="_blank" rel="noopener noreferrer" aria-label="Explorar la página informativa Salud Responde en ICATEC, abre una pestaña nueva">
+      <div class="icatec-editorial-cover is-health" aria-label="Ilustración esquemática de una página informativa">
+        <svg viewBox="0 0 240 130" fill="none" aria-hidden="true"><rect x="34" y="8" width="172" height="113" rx="13" fill="white" stroke="#253A82" stroke-width="2"/><path d="M35 27h170" stroke="#C5D1F4" stroke-width="2"/><circle cx="47" cy="18" r="3" fill="#88A2FF"/><circle cx="58" cy="18" r="3" fill="#FFB2F7"/><circle cx="69" cy="18" r="3" fill="#E3FC87"/><rect x="48" y="44" width="51" height="51" rx="12" fill="#C0E0FF"/><path d="M73.5 54v31M58 69.5h31" stroke="#253A82" stroke-width="6" stroke-linecap="round"/><path d="M114 48h76M114 59h68M114 72h74M114 83h56" stroke="#A6B9E9" stroke-width="6" stroke-linecap="round"/><path d="M48 108h141" stroke="#D4DFF8" stroke-width="5" stroke-linecap="round"/></svg>
+      </div>
+      <div class="icatec-editorial-content"><span class="icatec-editorial-type">PÁGINA WEB · SERVICIO CIUDADANO</span><strong class="icatec-editorial-title">Salud Responde</strong><span class="icatec-editorial-desc">Página informativa que presenta los beneficios y canales de orientación en salud.</span><span class="icatec-editorial-cta">Explorar página <span aria-hidden="true">↗</span></span></div>
+    </a>
+  </div>
+</section>
+      </div>
+      </dialog>
+      <dialog id="facebook-post-expanded" class="fb-expanded-dialog" aria-labelledby="facebook-expanded-title">
+        <div class="fb-expanded-inner">
+          <div class="fb-expanded-top">
+            <h3 id="facebook-expanded-title">Publicación de ICATEC</h3>
+            <button id="close-facebook-expanded" class="fb-expanded-close" type="button" aria-label="Cerrar publicación ampliada">Cerrar ×</button>
+          </div>
+          <div class="fb-expanded-frame-shell" id="facebook-expanded-frame"></div>
+          <div class="fb-expanded-bottom">
+            <span>Desliza dentro de la publicación para ver el contenido.</span>
+            <a id="facebook-expanded-original" href="https://www.facebook.com/icatecperu/" target="_blank" rel="noopener noreferrer">Ver en Facebook ↗</a>
+          </div>
+        </div>
       </dialog>
     </div>
   </section>
@@ -669,17 +855,19 @@ document.getElementById('entrar').addEventListener('click',enterWorld);
 document.getElementById('saltar').addEventListener('click',()=>world.scrollIntoView({behavior:reduced.matches?'instant':'smooth'}));
 const projects={
 icatec:{title:'ICATEC',type:'Proyecto profesional · Comunicación estratégica',description:'Comunicación y difusión de soluciones digitales para la ciudadanía de Ica. Mi trabajo incluye planificación de contenidos, campañas digitales, producción audiovisual y acciones de difusión.',additional:'En este proyecto he trabajado en la comunicación de servicios digitales, desde los contenidos hasta la difusión en territorio.',art:'ICA<br>TEC.',label:'01 / PROYECTO',facebookShare:'https://www.facebook.com/reel/1561457488594558'},
-simbila:{title:'Simbilá Verde',type:'Proyecto profesional · Comunicación visual',description:'Proyecto de comunicación visual y producción de contenidos en el sector inmobiliario.',additional:'',art:'S / V',label:'02 / PROYECTO'},
+simbila:{title:'Grupo Techo',type:'Proyecto profesional · Comunicación visual',description:'Proyecto de comunicación visual y producción de contenidos en el sector inmobiliario.',additional:'',art:'G / T',label:'02 / PROYECTO'},
 foto:{title:'Fotografía',type:'Archivo creativo · Exploración visual',description:'Retratos, autorretratos, fotografía conceptual y cobertura de eventos. Un espacio para presentar mis series fotográficas.',additional:'',art:'FOTO<br>GRAFÍA.',label:'03 / ARCHIVO'},
 audiovisual:{title:'Audiovisual',type:'Archivo creativo · Producción y narrativa',description:'Selección de trabajos de producción, edición y narrativa audiovisual.',additional:'',art:'FILM<br>01.',label:'04 / ARCHIVO'},
 diseno:{title:'Diseño gráfico',type:'Archivo creativo · Diseño y piezas gráficas',description:'Selección de piezas gráficas, exploraciones visuales y propuestas de diseño desarrolladas en distintos proyectos.',additional:'',art:'DISEÑO<br>GRÁFICO.',label:'05 / ARCHIVO'},
-ux:{title:'Diseño de experiencias',type:'Exploración personal · Diseño de experiencias',description:'Un espacio para prototipos, diseños de interfaces y experiencias digitales que voy desarrollando.',additional:'',art:'UX<br>LAB.',label:'05 / LAB'},
+licenciaweb:{title:'Diseño web para servicios ciudadanos',type:'Diseño web · ICATEC',description:'Diseño de una página informativa para facilitar el acceso a los trámites de licencia de conducir en Ica.',additional:'La página organiza las gestiones disponibles, explica el proceso paso a paso y dirige a la ciudadanía a Zona Segura. Mi participación corresponde al diseño de esta página informativa, no al desarrollo de la plataforma de trámites.',art:'LICENCIA<br>DIGITAL.',label:'PROYECTO DIGITAL',url:'https://www.icatec.pe/acerca-de-icatec/tramites-de-licencia-de-conducir/'},
+crm:{title:'CRM de búsqueda inmobiliaria',type:'Diseño UX/UI · Interfaz digital',description:'Diseño de interfaz para organizar y dar seguimiento a opciones de departamentos durante una búsqueda inmobiliaria.',additional:'',art:'CRM<br>WEB.',label:'PROYECTO DIGITAL',linkedinEmbed:'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7505760799311802368?compact=1'},
+linkedindemo:{title:'Proyecto digital · Por nombrar',type:'Experiencias digitales · Video de demostración',description:'Demostración audiovisual de un proyecto digital.',additional:'',art:'VIDEO<br>DIGITAL.',label:'PROYECTO DIGITAL',linkedinEmbed:'https://www.linkedin.com/embed/feed/update/urn:li:ugcPost:7518727871524413441?compact=1'},
 jabolin:{title:'Betti Jabolín',type:'Proyecto personal · Experiencia interactiva',description:'Una experiencia digital de Halloween: un cementerio interactivo para descubrir 31 películas de terror.',additional:'Puedes explorar la experiencia original en el enlace disponible debajo.',art:'31<br>FILMS.',label:'06 / LAB',url:'https://bettinavillegasportfolio.my.canva.site/bettijabolin'}
 };
 const categories={
 proyectos:{kicker:'Proyectos profesionales',title:'Comunicar también es crear.',tagline:'Comunicación estratégica & creatividad digital',keys:['icatec','simbila']},
 archivo:{kicker:'Archivo creativo',title:'Imágenes e historias.',tagline:'Explora el archivo creativo',keys:['foto','audiovisual','diseno']},
-digital:{kicker:'Experiencias digitales',title:'Ideas que se exploran.',tagline:'Diseño de experiencias',keys:['ux']}
+digital:{kicker:'Experiencias digitales',title:'Ideas que se exploran.',tagline:'Diseño de experiencias',keys:['licenciaweb','crm','linkedindemo']}
 };
 const categoryButtons=[...document.querySelectorAll('.object')];
 const list=document.getElementById('project-list');
@@ -710,9 +898,65 @@ const sceneDialog=document.getElementById('ventana-proyecto');
 const closeScene=document.getElementById('cerrar-escena');
 let currentCategory='proyectos';
 let currentProject='icatec';
+let previousGalleryProject=null;
 const caseSocials=document.getElementById('case-socials');
+const caseWebLink=document.getElementById('case-web-link');
+const caseSitePreview=document.getElementById('case-site-preview');
+const crmVideoShowcase=document.getElementById('case-crm-video');
+const crmVideoInner=document.getElementById('crm-video-inner');
+function stopCrmVideo(){crmVideoInner.replaceChildren();}
+function syncCrmVideo(){
+ const project=projects[currentProject];
+ const embedUrl=project && project.linkedinEmbed;
+ crmVideoShowcase.hidden=!embedUrl;
+ if(!embedUrl || !sceneDialog.open){stopCrmVideo();return;}
+ if(crmVideoInner.firstElementChild?.getAttribute('src')===embedUrl)return;
+ stopCrmVideo(); // Pausar el video anterior al cambiar de tarjeta
+ const iframe=document.createElement('iframe');
+ iframe.src=embedUrl;
+ iframe.title='Video de '+project.title;
+ iframe.loading='eager';
+ iframe.setAttribute('allow','autoplay; fullscreen; picture-in-picture');
+ iframe.setAttribute('allowfullscreen','');
+ iframe.referrerPolicy='strict-origin-when-cross-origin';
+ crmVideoInner.append(iframe);
+}
+
+
 const icatecGallery=document.getElementById('icatec-gallery');
 const mediaEmbed=document.getElementById('media-embed');
+const expandFacebookButton=document.getElementById('expand-facebook-post');
+const expandedPostDialog=document.getElementById('facebook-post-expanded');
+const expandedPostFrame=document.getElementById('facebook-expanded-frame');
+const expandedPostTitle=document.getElementById('facebook-expanded-title');
+const expandedPostOriginal=document.getElementById('facebook-expanded-original');
+const expandedPostClose=document.getElementById('close-facebook-expanded');
+function clearExpandedPost(){expandedPostFrame.replaceChildren();}
+function closeExpandedPost(){
+  if(expandedPostDialog.open){expandedPostDialog.close();}
+  else{expandedPostDialog.removeAttribute('open');}
+  clearExpandedPost();
+}
+expandedPostClose.addEventListener('click',closeExpandedPost);
+expandedPostDialog.addEventListener('close',clearExpandedPost);
+expandedPostDialog.addEventListener('click',(e)=>{if(e.target===expandedPostDialog)closeExpandedPost();});
+expandFacebookButton.addEventListener('click',()=>{
+  const media=activeMediaList()[activeIcatecMedia];
+  if(!media||media.kind!=='facebook-post')return;
+  expandedPostTitle.textContent=media.title+' · '+projects[currentProject].title;
+  expandedPostOriginal.href=media.url;
+  clearExpandedPost();
+  const iframe=document.createElement('iframe');
+  iframe.title='Publicación completa de Facebook';
+  iframe.setAttribute('scrolling','yes');
+  iframe.loading='eager';iframe.referrerPolicy='strict-origin-when-cross-origin';
+  iframe.src='https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(media.url)+'&show_text=true&width=560';
+  expandedPostFrame.append(iframe);
+  if(typeof expandedPostDialog.showModal==='function')expandedPostDialog.showModal();
+  else expandedPostDialog.setAttribute('open','');
+  expandedPostClose.focus();
+});
+
 const mediaThumbs=document.getElementById('media-thumbs');
 const mediaCurrentTitle=document.getElementById('media-current-title');
 const mediaOriginalLink=document.getElementById('media-original-link');
@@ -724,6 +968,16 @@ const icatecMedia=[
  {id:'facebook-2',kind:'facebook-post',title:'Publicación 02',source:'Facebook',url:'https://www.facebook.com/icatecperu/posts/pfbid02d2HTCiqyvdrh9xpJH8JaqoTtr7DPKdN6y9yRozLwdgMCaKEwir9tKWeRAWUW2a9sl'},
  {id:'facebook-reel',kind:'facebook-reel',title:'Reel original',source:'Facebook',url:'https://www.facebook.com/reel/1561457488594558'}
 ];
+
+const simbilaMedia=[
+ {id:'simbila-reel-1',kind:'facebook-reel',title:'Reel 01',source:'Facebook',url:'https://www.facebook.com/reel/1279972209786402'},
+ {id:'simbila-video-2',kind:'facebook-video',title:'Video 02',source:'Facebook',url:'https://www.facebook.com/SimbilaVerde/videos/1262176208184072'},
+ {id:'simbila-video-3',kind:'facebook-video',title:'Video 03',source:'Facebook',url:'https://www.facebook.com/SimbilaVerde/videos/591101897094458'},
+ {id:'simbila-video-4',kind:'facebook-video',title:'Video 04',source:'Facebook',url:'https://www.facebook.com/SimbilaVerde/videos/884775343599291'},
+ {id:'simbila-video-5',kind:'facebook-video',title:'Video 05',source:'Concreta · Facebook',url:'https://www.facebook.com/concretaconstructoras/videos/887353615673494'},
+ {id:'simbila-video-6',kind:'facebook-video',title:'Video 06',source:'Concreta · Facebook',url:'https://www.facebook.com/concretaconstructoras/videos/3394197320908519'}
+];
+const activeMediaList=()=>currentProject==='simbila'?simbilaMedia:icatecMedia;
 let activeIcatecMedia=0;
 function stopMediaPlayback(){
  // Desmontar el reproductor deja de reproducir el video anterior inmediatamente.
@@ -731,7 +985,7 @@ function stopMediaPlayback(){
 }
 function drawIcatecThumbs(){
  mediaThumbs.replaceChildren();
- icatecMedia.forEach((media,index)=>{
+ activeMediaList().forEach((media,index)=>{
    const btn=document.createElement('button');
    btn.type='button';btn.className='media-thumb';btn.dataset.mediaId=media.id;
    btn.setAttribute('aria-label','Mostrar '+media.title+' de '+media.source);
@@ -797,26 +1051,28 @@ function drawIcatecThumbs(){
  });
 }
 function selectIcatecMedia(index){
+ if(expandedPostDialog.open)closeExpandedPost();
  activeIcatecMedia=index;
- const media=icatecMedia[index];
+ const media=activeMediaList()[index];
  mediaCurrentTitle.textContent=media.title+' · '+media.source;
  mediaOriginalLink.href=media.url;
  mediaOriginalLink.textContent=media.kind==='youtube'?'Ver en YouTube ↗':'Ver en Facebook ↗';
- mediaCount.textContent=String(index+1).padStart(2,'0')+' / '+String(icatecMedia.length).padStart(2,'0');
+ mediaCount.textContent=String(index+1).padStart(2,'0')+' / '+String(activeMediaList().length).padStart(2,'0');
  [...mediaThumbs.children].forEach((button,i)=>button.setAttribute('aria-pressed',String(index===i)));
  stopMediaPlayback();
  document.getElementById('case').classList.toggle('is-facebook-post-featured',media.kind==='facebook-post');
+ expandFacebookButton.hidden=(media.kind!=='facebook-post');
  mediaEmbed.className='media-embed is-'+media.kind;
- if(!sceneDialog.open || currentProject!=='icatec')return;
+ if(!sceneDialog.open || (currentProject!=='icatec' && currentProject!=='simbila'))return;
  const iframe=document.createElement('iframe');
- iframe.title=media.title+' de ICATEC en '+media.source;
+ iframe.title=media.title+' de '+projects[currentProject].title+' en '+media.source;
  iframe.allow='autoplay; encrypted-media; picture-in-picture; fullscreen; web-share';
  iframe.allowFullscreen=true;iframe.loading='eager';
  iframe.referrerPolicy='strict-origin-when-cross-origin';
  if(media.kind==='facebook-post'){iframe.scrolling='yes';}
  if(media.kind==='youtube'){
    iframe.src='https://www.youtube.com/embed/'+encodeURIComponent(media.videoId)+'?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
- } else if(media.kind==='facebook-reel'){
+ } else if(media.kind==='facebook-reel' || media.kind==='facebook-video'){
    iframe.src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(media.url)+'&show_text=false&autoplay=true&mute=true&allowfullscreen=true&width=500';
  } else {
    // Estas URL de Facebook son publicaciones, no enlaces directos al archivo de video.
@@ -827,7 +1083,8 @@ function selectIcatecMedia(index){
  mediaEmbed.append(iframe);
 }
 function syncIcatecGallery(){
- const visible=currentProject==='icatec';
+ const visible=currentProject==='icatec'||currentProject==='simbila';
+ icatecGallery.setAttribute('aria-label','Galería multimedia de '+projects[currentProject].title);
  icatecGallery.hidden=!visible;
  if(!visible){stopMediaPlayback();return;}
  selectIcatecMedia(activeIcatecMedia);
@@ -837,7 +1094,14 @@ function showProject(key){
   if(!projects[key])return;
   currentProject=key;
   const project=projects[key];
+  // Iniciar cada proyecto con su primer contenido, evitando conservar una selección de otro proyecto.
+  if(previousGalleryProject!==key)activeIcatecMedia=0;
+  previousGalleryProject=key;
   caseSocials.hidden=(key!=='icatec');
+  document.getElementById('icatec-editorial').hidden=(key!=='icatec');
+  caseWebLink.hidden=(key!=='icatec');
+  caseSitePreview.hidden=(key!=='licenciaweb');
+  syncCrmVideo();
   document.getElementById('case-label').textContent=project.type;
   document.getElementById('case-label').hidden=true;
   document.getElementById('case-name').textContent=project.title;
@@ -850,10 +1114,11 @@ function showProject(key){
   const caseArt=document.getElementById('case-art');
   caseVideo.pause();
   if(project.video){caseVideo.src=project.video;caseVideo.hidden=false;caseArt.hidden=true;}
-  else{caseVideo.removeAttribute('src');caseVideo.load();caseVideo.hidden=true;caseArt.hidden=(key==='icatec');}
+  else{caseVideo.removeAttribute('src');caseVideo.load();caseVideo.hidden=true;caseArt.hidden=(key==='icatec'||key==='simbila'||key==='licenciaweb'||Boolean(project.linkedinEmbed));}
+  if(key==='icatec'||key==='simbila')drawIcatecThumbs();
   syncIcatecGallery();
   const link=document.getElementById('case-link');
-  if(project.url){link.href=project.url;link.hidden=false}else{link.hidden=true};
+  if(project.url){link.href=project.url;link.hidden=false;link.textContent=(key==='licenciaweb'?'Visitar página real ↗':'Ver experiencia original ↗')}else{link.hidden=true};
   [...list.querySelectorAll('.project')].forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.project===key)));
 }
 function showCategory(key){
@@ -864,6 +1129,7 @@ function showCategory(key){
   const isCarousel=key==='archivo'||key==='proyectos';
   archiveControls.hidden=!isCarousel;
   list.classList.toggle('archive-carousel',isCarousel);
+  list.classList.toggle('digital-cards',key==='digital');
   list.scrollLeft=0;
   document.getElementById('scene-tagline').textContent=cat.tagline;
   document.getElementById('category-kicker').textContent=cat.kicker;
@@ -887,6 +1153,13 @@ function showCategory(key){
   showProject(cat.keys[0]);
   if(isCarousel)requestAnimationFrame(updateArchiveControls);
 }
+// Referencia desde ICATEC hasta el caso digital, sin abandonar la página.
+caseWebLink.addEventListener('click',()=>{
+  if(expandedPostDialog.open)closeExpandedPost();
+  showCategory('digital');
+  showProject('licenciaweb');
+  sceneDialog.scrollTop=0;
+});
 let opening=false;
 categoryButtons.forEach(button=>button.addEventListener('click',()=>{
   if(opening)return;
@@ -898,6 +1171,7 @@ categoryButtons.forEach(button=>button.addEventListener('click',()=>{
     if(typeof sceneDialog.showModal==='function')sceneDialog.showModal();
     else sceneDialog.setAttribute('open','');
     syncIcatecGallery();
+    syncCrmVideo();
     categoryButtons.forEach(b=>b.setAttribute('aria-expanded',String(b===button)));
     sceneDialog.scrollTop=0;
     closeScene.focus();
@@ -905,10 +1179,10 @@ categoryButtons.forEach(button=>button.addEventListener('click',()=>{
     window.setTimeout(()=>button.classList.remove('is-activating'),80);
   },reduced.matches?0:410);
 }));
-function hideScene(){stopMediaPlayback();if(typeof sceneDialog.close==='function'&&sceneDialog.open)sceneDialog.close();else sceneDialog.removeAttribute('open')}
+function hideScene(){stopCrmVideo();closeExpandedPost();stopMediaPlayback();if(typeof sceneDialog.close==='function'&&sceneDialog.open)sceneDialog.close();else sceneDialog.removeAttribute('open')}
 closeScene.addEventListener('click',hideScene);
 sceneDialog.addEventListener('click',e=>{if(e.target===sceneDialog)hideScene()});
-sceneDialog.addEventListener('close',()=>{stopMediaPlayback();categoryButtons.forEach(b=>b.setAttribute('aria-expanded','false'))});
+sceneDialog.addEventListener('close',()=>{stopCrmVideo();stopMediaPlayback();categoryButtons.forEach(b=>b.setAttribute('aria-expanded','false'))});
 showCategory(currentCategory);
 // Correo y teléfono son enlaces funcionales. LinkedIn se mostrará sin enlace hasta recibir la URL auténtica.
 
