@@ -416,6 +416,36 @@ body{overflow-x:clip}
   .doll-float{animation:none!important}
 }
 
+
+/* Galería multimedia de ICATEC. Un reproductor activo, proporciones por origen. */
+.icatec-gallery[hidden]{display:none!important}
+.icatec-gallery{display:grid;gap:13px;min-width:0}
+.icatec-gallery .media-embed{width:100%;min-width:0;grid-template-columns:minmax(0,1fr);position:relative;border-radius:19px;overflow:hidden;background:#ECF1FF;border:1px solid #CDD7F5;display:grid;place-items:center}
+.icatec-gallery .media-embed.is-youtube{aspect-ratio:16/9}
+.icatec-gallery .media-embed.is-facebook-reel{max-width:380px;min-height:420px;aspect-ratio:9/13;margin-inline:auto}
+.icatec-gallery .media-embed.is-facebook-post{min-height:470px;max-height:540px;overflow:auto;align-items:start}
+.icatec-gallery .media-embed iframe{display:block;width:100%;height:100%;border:0;background:#fff}
+.icatec-gallery .media-embed.is-facebook-post iframe{height:520px;min-height:520px}
+.icatec-gallery .media-embed.is-facebook-reel iframe{min-height:500px}
+.icatec-gallery .media-meta{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:#253A82}
+.icatec-gallery .media-current-title{font-weight:600}
+.icatec-gallery .media-meta a{color:#475A91;text-decoration:underline;text-underline-offset:4px;font-size:11px}
+.icatec-gallery .media-strip-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-top:3px;font-size:12px;color:#253A82}
+.icatec-gallery .media-strip-heading span:last-child{color:#60729D;font-variant-numeric:tabular-nums}
+.icatec-gallery .media-thumbs{display:flex;gap:9px;padding:3px 3px 12px;overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:thin;scrollbar-color:#BCCAF0 transparent;overscroll-behavior-inline:contain;-webkit-overflow-scrolling:touch}
+.icatec-gallery .media-thumb{flex:0 0 clamp(114px,37%,155px);scroll-snap-align:start;display:flex;flex-direction:column;gap:6px;min-width:0;text-align:left;border:1px solid #CBD6F3;background:#fff;border-radius:15px;padding:7px;cursor:pointer;color:#253A82;font:inherit;transition:border-color .2s,transform .2s,background .2s}
+.icatec-gallery .media-thumb:hover{transform:translateY(-2px);background:#F2F5FF}
+.icatec-gallery .media-thumb:focus-visible{outline:3px solid #88A2FF;outline-offset:2px}
+.icatec-gallery .media-thumb[aria-pressed="true"]{border-color:#647FFF;background:#EAF0FF;box-shadow:inset 0 0 0 1px #647FFF}
+.icatec-gallery .media-thumb-art{width:100%;aspect-ratio:16/9;border-radius:9px;background:linear-gradient(140deg,#88A2FF,#AB9DFF);position:relative;display:grid;place-items:center;overflow:hidden}
+.icatec-gallery .media-thumb-art[data-origin="facebook"]{background:linear-gradient(130deg,#C0E0FF,#AB9DFF)}
+.icatec-gallery .media-thumb-art img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}
+.icatec-gallery .media-thumb-art .media-thumb-play{position:relative;display:grid;place-items:center;width:29px;height:29px;border-radius:50%;background:#fff;color:#253A82;font-size:12px;box-shadow:0 2px 8px #253A8236}
+.icatec-gallery .media-thumb-source{font-size:10px;color:#536498;display:block;white-space:nowrap}
+.icatec-gallery .media-thumb-label{font-size:12px;display:block;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:760px){.icatec-gallery .media-thumbs{gap:8px}.icatec-gallery .media-thumb{flex-basis:136px}.icatec-gallery .media-embed.is-facebook-post{max-height:490px;min-height:440px}.icatec-gallery .media-embed.is-facebook-reel{min-height:390px}}
+@media(max-width:390px){.icatec-gallery .media-thumb{flex-basis:121px}.icatec-gallery .media-embed{border-radius:14px}.icatec-gallery .media-embed.is-facebook-reel{max-width:100%;min-height:360px}}
+@media(prefers-reduced-motion:reduce){.icatec-gallery .media-thumb{transition:none}}
 </style>
 </head>
 <body>
@@ -495,16 +525,12 @@ body{overflow-x:clip}
 <a class="social-link" href="https://www.facebook.com/icatecperu/" target="_blank" rel="noopener noreferrer" aria-label="Facebook de ICATEC Perú, abrir en otra pestaña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 12A10 10 0 1 0 10.44 21.88V14.9H7.9V12h2.54V9.8c0-2.52 1.5-3.91 3.78-3.91 1.1 0 2.25.2 2.25.2v2.47H15.2c-1.25 0-1.64.77-1.64 1.56V12h2.8l-.44 2.9h-2.36v6.98A10 10 0 0 0 22 12Z"/></svg>Facebook</a>
 <a class="social-link" href="https://www.youtube.com/@icatecperu" target="_blank" rel="noopener noreferrer" aria-label="YouTube de ICATEC Perú, abrir en otra pestaña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M22 8.1a2.7 2.7 0 0 0-1.9-1.9C18.4 5.75 12 5.75 12 5.75s-6.4 0-8.1.45A2.7 2.7 0 0 0 2 8.1a28 28 0 0 0 0 7.8 2.7 2.7 0 0 0 1.9 1.9c1.7.45 8.1.45 8.1.45s6.4 0 8.1-.45a2.7 2.7 0 0 0 1.9-1.9 28 28 0 0 0 0-7.8ZM10 15.2V8.8l5.6 3.2L10 15.2Z"/></svg>YouTube</a>
 <a class="social-link" href="https://www.tiktok.com/@icatecperu" target="_blank" rel="noopener noreferrer" aria-label="TikTok de ICATEC Perú, abrir en otra pestaña"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.9 2h-3.1v13.1a3.1 3.1 0 1 1-2.6-3.1V8.8a6.4 6.4 0 1 0 5.8 6.4V8.6a8.3 8.3 0 0 0 4.9 1.6V7.1c-2.8 0-4.9-2.2-5-5.1Z"/></svg>TikTok</a>
-</div></div></div><div class="case-media"><video id="case-video" controls playsinline preload="metadata" hidden aria-label="Video del trabajo seleccionado"></video><div id="case-facebook-stage" class="facebook-stage" hidden aria-label="Video de ICATEC publicado en Facebook">
-  <div id="facebook-player-shell" class="facebook-player-shell" hidden>
-    <iframe id="case-facebook-iframe" class="facebook-embed" title="Reel de ICATEC en Facebook" loading="eager" allow="autoplay; clipboard-write; encrypted-media; picture-in-picture; web-share; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin" hidden></iframe>
-  </div>
-  <a id="case-facebook-placeholder" class="facebook-placeholder" href="https://www.facebook.com/reel/1561457488594558" target="_blank" rel="noopener noreferrer" aria-label="Abrir video de ICATEC en Facebook">
-    <span class="facebook-label">Proyecto destacado · ICATEC</span><strong class="facebook-heading">Video en Facebook</strong><span class="facebook-play" aria-hidden="true">▶</span><span class="facebook-label">Abrir Reel ↗</span>
-  </a>
-  <p id="case-facebook-notice" class="facebook-notice">El Reel intenta reproducirse automáticamente en silencio al abrir ICATEC. Facebook puede impedirlo, especialmente en celulares. Si ves el botón Play, puedes pulsarlo o abrir el video original.</p>
-  <div class="facebook-actions"><a class="facebook-link" href="https://www.facebook.com/reel/1561457488594558" target="_blank" rel="noopener noreferrer">Ver Reel original en Facebook ↗</a><button type="button" id="case-facebook-switch" class="facebook-show-fallback" hidden>Mostrar enlace alternativo</button></div>
-</div><div class="case-art" id="case-art" aria-label="Espacio para materiales auténticos del proyecto"><span class="art-number" id="art-number">01 / 05</span><strong class="art-word" id="art-word">ICA<br>TEC.</strong><span class="art-note">Espacio para una pieza original</span></div></div></div>
+</div></div></div><div class="case-media"><video id="case-video" controls playsinline preload="metadata" hidden aria-label="Video del trabajo seleccionado"></video><section id="icatec-gallery" class="icatec-gallery" hidden aria-label="Galería multimedia de ICATEC">
+  <div id="media-embed" class="media-embed" aria-live="off"></div>
+  <div class="media-meta"><span id="media-current-title" class="media-current-title">Video 01 · YouTube</span><a id="media-original-link" href="https://www.youtube.com/watch?v=ydR3NMvyoHQ" target="_blank" rel="noopener noreferrer">Abrir contenido original ↗</a></div>
+  <div class="media-strip-heading"><span>Selección de contenidos</span><span id="media-count" aria-live="polite">01 / 05</span></div>
+  <div id="media-thumbs" class="media-thumbs" role="group" aria-label="Elegir un contenido de ICATEC"></div>
+</section><div class="case-art" id="case-art" aria-label="Espacio para materiales auténticos del proyecto"><span class="art-number" id="art-number">01 / 05</span><strong class="art-word" id="art-word">ICA<br>TEC.</strong><span class="art-note">Espacio para una pieza original</span></div></div></div>
       </div>
       </dialog>
     </div>
@@ -625,33 +651,91 @@ const sceneDialog=document.getElementById('ventana-proyecto');
 const closeScene=document.getElementById('cerrar-escena');
 let currentCategory='proyectos';
 let currentProject='icatec';
-const facebookStage=document.getElementById('case-facebook-stage');
-const facebookPlayerShell=document.getElementById('facebook-player-shell');
-const facebookEmbed=document.getElementById('case-facebook-iframe');
-const facebookPlaceholder=document.getElementById('case-facebook-placeholder');
-const facebookSwitch=document.getElementById('case-facebook-switch');
 const caseSocials=document.getElementById('case-socials');
-// Los archivos locales no permiten comprobar las restricciones del reproductor de Facebook.
-// El enlace directo al Reel mejora la compatibilidad; el reproductor depende de permisos de Facebook.
-function stopFacebook(){facebookEmbed.removeAttribute('src');}
-function showFacebookFallback(){
- stopFacebook();facebookPlayerShell.hidden=true;facebookEmbed.hidden=true;
- facebookPlaceholder.hidden=false;facebookSwitch.hidden=true;
+const icatecGallery=document.getElementById('icatec-gallery');
+const mediaEmbed=document.getElementById('media-embed');
+const mediaThumbs=document.getElementById('media-thumbs');
+const mediaCurrentTitle=document.getElementById('media-current-title');
+const mediaOriginalLink=document.getElementById('media-original-link');
+const mediaCount=document.getElementById('media-count');
+const icatecMedia=[
+ {id:'youtube-1',kind:'youtube',title:'Video 01',source:'YouTube',videoId:'ydR3NMvyoHQ',url:'https://www.youtube.com/watch?v=ydR3NMvyoHQ'},
+ {id:'youtube-2',kind:'youtube',title:'Video 02',source:'YouTube',videoId:'b9ft5ia46r0',url:'https://www.youtube.com/watch?v=b9ft5ia46r0'},
+ {id:'facebook-1',kind:'facebook-post',title:'Publicación 01',source:'Facebook',url:'https://www.facebook.com/icatecperu/posts/pfbid09CGYmUsq9P5hWKnEaarU2kiYgS3EpWSXRJ7vAbzxrrLvS5orm7MQ478uYPHkiwrVl'},
+ {id:'facebook-2',kind:'facebook-post',title:'Publicación 02',source:'Facebook',url:'https://www.facebook.com/icatecperu/posts/pfbid02d2HTCiqyvdrh9xpJH8JaqoTtr7DPKdN6y9yRozLwdgMCaKEwir9tKWeRAWUW2a9sl'},
+ {id:'facebook-reel',kind:'facebook-reel',title:'Reel original',source:'Facebook',url:'https://www.facebook.com/reel/1561457488594558'}
+];
+let activeIcatecMedia=0;
+function stopMediaPlayback(){
+ // Desmontar el reproductor deja de reproducir el video anterior inmediatamente.
+ mediaEmbed.replaceChildren();
 }
-function syncFacebook(){
- const project=projects[currentProject];
- const hasFacebook=Boolean(project&&project.facebookShare);
- facebookStage.hidden=!hasFacebook;
- if(!hasFacebook || !sceneDialog.open){showFacebookFallback();return;}
- // Mostrar el reproductor auténtico de Facebook también en la vista previa.
- // Las restricciones de Facebook/navegador siguen aplicándose.
- facebookPlayerShell.hidden=false;facebookEmbed.hidden=false;
- facebookPlaceholder.hidden=true;facebookSwitch.hidden=false;
- const playerUrl='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(project.facebookShare)+
-   '&show_text=false&autoplay=true&mute=1&allowfullscreen=true&width=340';
- if(facebookEmbed.getAttribute('src')!==playerUrl){facebookEmbed.setAttribute('src',playerUrl);}
+function drawIcatecThumbs(){
+ mediaThumbs.replaceChildren();
+ icatecMedia.forEach((media,index)=>{
+   const btn=document.createElement('button');
+   btn.type='button';btn.className='media-thumb';btn.dataset.mediaId=media.id;
+   btn.setAttribute('aria-label','Mostrar '+media.title+' de '+media.source);
+   const art=document.createElement('span');art.className='media-thumb-art';
+   art.dataset.origin=media.kind.startsWith('facebook')?'facebook':'youtube';
+   if(media.kind==='youtube'){
+     const img=document.createElement('img');
+     img.src='https://i.ytimg.com/vi/'+encodeURIComponent(media.videoId)+'/hqdefault.jpg';
+     img.alt='';img.loading='lazy';
+     img.addEventListener('error',()=>img.remove());
+     art.append(img);
+   }
+   const indicator=document.createElement('span');
+   indicator.className='media-thumb-play';
+   indicator.setAttribute('aria-hidden','true');
+   if(media.kind==='facebook-post'){
+     // Publicaciones de Facebook: miniatura de imagen, no botón de reproducción.
+     indicator.innerHTML='<svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 16-5.5-5.5L5 21"/></svg>';
+   } else {
+     indicator.textContent='▶';
+   }
+   art.append(indicator);
+   const label=document.createElement('span');label.className='media-thumb-label';label.textContent=media.title;
+   const origin=document.createElement('span');origin.className='media-thumb-source';origin.textContent=media.source;
+   btn.append(art,label,origin);
+   btn.addEventListener('click',()=>selectIcatecMedia(index));
+   mediaThumbs.append(btn);
+ });
 }
-facebookSwitch.addEventListener('click',showFacebookFallback);
+function selectIcatecMedia(index){
+ activeIcatecMedia=index;
+ const media=icatecMedia[index];
+ mediaCurrentTitle.textContent=media.title+' · '+media.source;
+ mediaOriginalLink.href=media.url;
+ mediaOriginalLink.textContent=media.kind==='youtube'?'Ver en YouTube ↗':'Ver en Facebook ↗';
+ mediaCount.textContent=String(index+1).padStart(2,'0')+' / '+String(icatecMedia.length).padStart(2,'0');
+ [...mediaThumbs.children].forEach((button,i)=>button.setAttribute('aria-pressed',String(index===i)));
+ stopMediaPlayback();
+ mediaEmbed.className='media-embed is-'+media.kind;
+ if(!sceneDialog.open || currentProject!=='icatec')return;
+ const iframe=document.createElement('iframe');
+ iframe.title=media.title+' de ICATEC en '+media.source;
+ iframe.allow='autoplay; encrypted-media; picture-in-picture; fullscreen; web-share';
+ iframe.allowFullscreen=true;iframe.loading='eager';
+ iframe.referrerPolicy='strict-origin-when-cross-origin';
+ if(media.kind==='youtube'){
+   iframe.src='https://www.youtube.com/embed/'+encodeURIComponent(media.videoId)+'?autoplay=1&mute=1&playsinline=1&controls=1&rel=0';
+ } else if(media.kind==='facebook-reel'){
+   iframe.src='https://www.facebook.com/plugins/video.php?href='+encodeURIComponent(media.url)+'&show_text=false&autoplay=true&mute=true&allowfullscreen=true&width=500';
+ } else {
+   // Estas URL de Facebook son publicaciones, no enlaces directos al archivo de video.
+   // Embedded Posts funciona con publicaciones públicas pero no garantiza autoplay.
+   iframe.src='https://www.facebook.com/plugins/post.php?href='+encodeURIComponent(media.url)+'&show_text=false&width=500';
+ }
+ mediaEmbed.append(iframe);
+}
+function syncIcatecGallery(){
+ const visible=currentProject==='icatec';
+ icatecGallery.hidden=!visible;
+ if(!visible){stopMediaPlayback();return;}
+ selectIcatecMedia(activeIcatecMedia);
+}
+drawIcatecThumbs();
 function showProject(key){
   if(!projects[key])return;
   currentProject=key;
@@ -669,8 +753,8 @@ function showProject(key){
   const caseArt=document.getElementById('case-art');
   caseVideo.pause();
   if(project.video){caseVideo.src=project.video;caseVideo.hidden=false;caseArt.hidden=true;}
-  else{caseVideo.removeAttribute('src');caseVideo.load();caseVideo.hidden=true;caseArt.hidden=Boolean(project.facebookShare);}
-  syncFacebook();
+  else{caseVideo.removeAttribute('src');caseVideo.load();caseVideo.hidden=true;caseArt.hidden=(key==='icatec');}
+  syncIcatecGallery();
   const link=document.getElementById('case-link');
   if(project.url){link.href=project.url;link.hidden=false}else{link.hidden=true};
   [...list.querySelectorAll('.project')].forEach(button=>button.setAttribute('aria-pressed',String(button.dataset.project===key)));
@@ -712,10 +796,11 @@ categoryButtons.forEach(button=>button.addEventListener('click',()=>{
   opening=true;
   button.classList.add('is-activating');
   window.setTimeout(()=>{
+    if(button.dataset.category==='proyectos')activeIcatecMedia=0;
     showCategory(button.dataset.category);
     if(typeof sceneDialog.showModal==='function')sceneDialog.showModal();
     else sceneDialog.setAttribute('open','');
-    syncFacebook();
+    syncIcatecGallery();
     categoryButtons.forEach(b=>b.setAttribute('aria-expanded',String(b===button)));
     sceneDialog.scrollTop=0;
     closeScene.focus();
@@ -723,10 +808,10 @@ categoryButtons.forEach(button=>button.addEventListener('click',()=>{
     window.setTimeout(()=>button.classList.remove('is-activating'),80);
   },reduced.matches?0:410);
 }));
-function hideScene(){stopFacebook();if(typeof sceneDialog.close==='function'&&sceneDialog.open)sceneDialog.close();else sceneDialog.removeAttribute('open')}
+function hideScene(){stopMediaPlayback();if(typeof sceneDialog.close==='function'&&sceneDialog.open)sceneDialog.close();else sceneDialog.removeAttribute('open')}
 closeScene.addEventListener('click',hideScene);
 sceneDialog.addEventListener('click',e=>{if(e.target===sceneDialog)hideScene()});
-sceneDialog.addEventListener('close',()=>{stopFacebook();categoryButtons.forEach(b=>b.setAttribute('aria-expanded','false'))});
+sceneDialog.addEventListener('close',()=>{stopMediaPlayback();categoryButtons.forEach(b=>b.setAttribute('aria-expanded','false'))});
 showCategory(currentCategory);
 // Correo y teléfono son enlaces funcionales. LinkedIn se mostrará sin enlace hasta recibir la URL auténtica.
 
